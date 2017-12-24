@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Telemetrics</title>
+    <script type='text/javascript' src='jquery-3.2.1.min.js'></script>
+    <script type='text/javascript' src='moment.js'></script>
+    <script type="text/javascript">
+        var time_difference = new Date().getTimezoneOffset();
+        $(document).ready(function(){
+            $.ajax({
+                url: 'http://localhost/FleetManagement/api.php/devices',
+                success:function (data){
+                    for (i=0; i<data.length; i++){
+                        var latest = moment(data[i].latest); // last signal sent in UTC
+                        var local = inst.add(time_difference, 'm'); // converting to local time
+                        var last = local.format('LLL'); // formatting the local time to display
+                        var diff = moment().diff(local, 'minutes'); // Get the difference in minutes between hte current time and the last status update
+                        CssClass = diff > (24*60) ? 'danger' : 'normal' ;
+                        $("#MainTable").append(
+                                "<tr class=" + CssClass + "><td>" + (i+1) + "</td><td>" + data[i].id + "</td><td>" + data[i].device_name + "</td><td>" + last + "</td></tr>"
+                        );
+                    }
+                },
+                error:function(data){
+                    alert("Wrong parameters sent. Error: " + data.status);
+                }
+
+            });
+        });
+    </script>
+    <style>
+        .normal{
+            background-color: greenyellow;
+        }
+        .danger{
+            background-color: orangered;
+        }
+        table{
+            border:1px solid burlywood;
+            width: 600px;
+        }
+        table tr td {
+
+        }
+    </style>
+</head>
+    <body>
+
+        <table id="MainTable">
+            <tr>
+                <th>S.No</th>
+                <th>Device Id</th>
+                <th>Device Name</th>
+                <th>Last status sent on</th>
+            </tr>
+
+        </table>
+    </body>
+</html>
