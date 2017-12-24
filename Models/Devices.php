@@ -17,16 +17,18 @@ class Devices {
     }
 
     function getDevices(){
-        $stmt = $this->connection->prepare('
+        $stmt = $this->connection->prepare("
             Select
-                d.id,d.device_name,
-                max(t.created_on) as latest
-            From
-                devices d, telemetrics t
-            where
-                d.id = t.device_id
-            group by
-                t.device_id');
+				d.id,d.device_name,
+				max(t.created_on) as latest,
+				if(date_add(max(t.created_on), INTERVAL 1440 MINUTE ) < current_timestamp(),  'OFFLINE','OK') as status
+			From
+				devices d, telemetrics t
+			where
+				d.id = t.device_id
+			group by
+				t.device_id
+		");
         $stmt->execute();
         return $stmt->fetchAll();
     }

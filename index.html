@@ -14,10 +14,17 @@
                         var latest = moment(data[i].latest); // last signal sent in UTC
                         var local = latest.add(time_difference, 'm'); // converting to local time
                         var last = local.format('LLL'); // formatting the local time to display
-                        var diff = moment().diff(local, 'minutes'); // Get the difference in minutes between hte current time and the last status update
-                        CssClass = diff > (24*60) ? 'danger' : 'normal' ;
+
+                        CssClass = data[i].status == 'OFFLINE' ? 'danger' : 'normal' ;
                         $("#MainTable").append(
-                                "<tr class=" + CssClass + "><td>" + (i+1) + "</td><td>" + data[i].id + "</td><td>" + data[i].device_name + "</td><td>" + last + "</td></tr>"
+                                "<tr class=" + CssClass + ">" +
+                                        "<td>" + (i+1) + "</td>" +
+                                        "<td>" + data[i].id + "</td>" +
+                                        "<td>" + data[i].device_name + "</td>" +
+                                        "<td>" + data[i].latest + "</td>" +
+                                        "<td>" + last + "</td>" +
+                                        "<td>" + data[i].status + "</td" +
+                                 "</tr>"
                         );
                     }
                 },
@@ -37,7 +44,7 @@
         }
         table{
             border:1px solid burlywood;
-            width: 600px;
+            width: 700px;
         }
         table tr td {
 
@@ -52,6 +59,8 @@
                 <th>Device Id</th>
                 <th>Device Name</th>
                 <th>Last status sent on</th>
+				<th>Local time</th>
+				<th>Status</th>
             </tr>
         </table>
     </body>
