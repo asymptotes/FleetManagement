@@ -6,7 +6,7 @@ Tough backend and frontend part are both setup in the same directory, the fronte
 
 Database:
 ---------
-Create a database : fleet and execute the fleet.sql. This will automatically create 2 tables with initial data.
+Create a database 'fleet' and execute the fleet.sql. This will automatically create 2 tables with initial data.
 Table 'devices':
 	This is the master table for the each devices
 Table 'telemetrics':
