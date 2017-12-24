@@ -12,7 +12,7 @@
                 success:function (data){
                     for (i=0; i<data.length; i++){
                         var latest = moment(data[i].latest); // last signal sent in UTC
-                        var local = inst.add(time_difference, 'm'); // converting to local time
+                        var local = latest.add(time_difference, 'm'); // converting to local time
                         var last = local.format('LLL'); // formatting the local time to display
                         var diff = moment().diff(local, 'minutes'); // Get the difference in minutes between hte current time and the last status update
                         CssClass = diff > (24*60) ? 'danger' : 'normal' ;
@@ -53,7 +53,6 @@
                 <th>Device Name</th>
                 <th>Last status sent on</th>
             </tr>
-
         </table>
     </body>
 </html>
